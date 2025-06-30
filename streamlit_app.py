@@ -111,7 +111,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         buffer.seek(0)
         imagem_base64 = base64.b64encode(buffer.read()).decode('utf-8')
         plt.close()
-        return f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
+        return f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>', categoria
     except Exception as e:
         return f"<p>Erro ao gerar gráfico JSON: {e}</p>"
 
@@ -180,7 +180,7 @@ def criar_mapa_completo(df_completo):
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
-        cor = icone_cores.get(row['Icone'], 'blue')
+        cor = icone_cores.get(categoria, 'blue')
         folium.Marker(
             location=[row['Latitude'], row['Longitude']],
             popup=popup,
