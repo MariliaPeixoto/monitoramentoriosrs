@@ -168,9 +168,6 @@ def criar_mapa_completo(df_completo):
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
 
-df_graf
-df_estacoes
-
 df_completo = pd.merge(df_graf, df_estacoes, left_on='Estação', right_on='Estação', how='left')
 
 coordenadas = {
