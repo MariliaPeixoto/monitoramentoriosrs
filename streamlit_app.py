@@ -170,11 +170,11 @@ def criar_mapa_completo(df_completo):
         background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
         padding: 10px; color: black;">
         <b>Legenda</b><br>
-        <i class="fa fa-tint" style="color:green"></i> Normal<br>
+        <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
         <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
-        <i class="fa fa-tint" style="color:beige"></i> Cota de Atenção<br>
-        <i class="fa fa-tint" style="color:orange"></i> Cota de Alerta<br>
-        <i class="fa fa-tint" style="color:red"></i> Cota de Inundação<br>
+        <i class="fa fa-tint" style="color:#FFC88C"></i> Cota de Atenção<br>
+        <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
+        <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
         <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
           </div>
         '''
