@@ -32,7 +32,7 @@ def extrair_estacoes_sgb(urls):
             for nome, lat, lon, icone in matches:
                 all_dados.append({
                     "Bacia": bacia,
-                    "Estacao": nome,
+                    "Estação": nome,
                     "Latitude": float(lat),
                     "Longitude": float(lon),
                     "Icone": icone
