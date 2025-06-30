@@ -71,7 +71,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
         plt.figure(figsize=(8, 4))
-        plt.plot(df['DataHora'], df['Nivel'], marker='o', linestyle='-', label='Nível do rio', color='#89a7b1')
+        plt.plot(df['DataHora'], df['Nivel'], marker='o', linestyle='-', label='Nível do rio', color='#88CDF6')
         if not pd.isna(cota_aten):
             plt.axhline(y=cota_aten/100, color='gold', linestyle='--', label='Cota de Atenção')
         if not pd.isna(cota_alerta):
@@ -134,7 +134,7 @@ def criar_mapa_completo(df_completo):
             dados = extrair_dados_sgb(link)
             if dados is not None and not dados.empty:
                 fig, ax = plt.subplots()
-                dados.plot(x='timestamp', y='nivel', ax=ax, legend=False)
+                dados.plot(x='timestamp', y='nivel', ax=ax, legend=False, color='#88CDF6')
                 ax.set_title(f"Nível do Rio - {row['Nome']}")
                 ax.set_ylabel('Nível (cm)')
                 ax.set_xlabel('Data')
