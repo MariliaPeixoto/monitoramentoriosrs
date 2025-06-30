@@ -1,0 +1,17 @@
+pandas
+requests
+io
+base64
+folium
+bs4
+re
+ast
+requests
+re
+pandas as pd
+urllib.parse
+urlparse
+parse_qs
+matplotlib.pyplot
+numpy
+plotlib
