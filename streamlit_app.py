@@ -54,7 +54,7 @@ def carregar_dados():
         'estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133',
         'estacaouruguai1117','estacaouruguai2029'
     ]
-    df = df_comsc[~df_comsc['Estacao'].isin(estacoes_excluir)]
+    df = df_comsc[~df_comsc['Estação'].isin(estacoes_excluir)]
     return df
 
 @st.cache_data
