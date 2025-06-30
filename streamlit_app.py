@@ -13,7 +13,7 @@ from urllib.parse import urlparse, parse_qs
 from streamlit_folium import st_folium
 
 st.set_page_config(layout="wide")
-st.title("Monitoramento de Cotas de Inundação - Bacias Uruguai, Taquari e Caí")
+st.title("Monitoramento de Cotas de Inundação - Rio Grande do Sul")
 
 @st.cache_data
 def extrair_estacoes_sgb(urls):
@@ -167,6 +167,10 @@ def criar_mapa_completo(df_completo):
 
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
+
+df_graf
+df_estacoes
+
 df_completo = pd.merge(df_graf, df_estacoes, left_on='Estação', right_on='Estação', how='left')
 
 coordenadas = {
