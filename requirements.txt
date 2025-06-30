@@ -1,17 +1,17 @@
+streamlit
 pandas
 requests
-io
-base64
+matplotlib.pyplot
 folium
-bs4
+folium
+IFrame
+bs4 BeautifulSoup
 re
 ast
-requests
-re
-pandas as pd
+io
+base64
 urllib.parse
 urlparse
 parse_qs
-matplotlib.pyplot
-numpy
-plotlib
+streamlit_folium
+st_folium
