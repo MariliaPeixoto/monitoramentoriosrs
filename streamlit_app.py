@@ -16,7 +16,7 @@ st.set_page_config(layout="wide")
 st.title("Monitoramento de Cotas de Inundação - Bacias Uruguai, Taquari e Caí")
 
 @st.cache_data
-def extrair_estacoes_sace(urls):
+def extrair_estacoes_sgb(urls):
     all_dados = []
     pattern = re.compile(
         r"""const\s+(estacao\w+)\s*=\s*L\.marker\(\[\s*(-?\d+\.\d+),\s*(-?\d+\.\d+)\s*\],\s*\{\s*icon:\s*(\w+)""", re.MULTILINE
@@ -32,7 +32,7 @@ def extrair_estacoes_sace(urls):
             for nome, lat, lon, icone in matches:
                 all_dados.append({
                     "Bacia": bacia,
-                    "Estação": nome,
+                    "Estacao": nome,
                     "Latitude": float(lat),
                     "Longitude": float(lon),
                     "Icone": icone
@@ -48,13 +48,13 @@ def carregar_dados():
         "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=taquari",
         "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=cai"
     ]
-    df_comsc = extrair_estacoes_sace(urls)
+    df_comsc = extrair_estacoes_sgb(urls)
     estacoes_excluir = [
         'estacaouruguai50186','estacaouruguai51102','estacaouruguai26218','estacaouruguai52105',
         'estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133',
         'estacaouruguai1117','estacaouruguai2029'
     ]
-    df = df_comsc[~df_comsc['Estação'].isin(estacoes_excluir)]
+    df = df_comsc[~df_comsc['Estacao'].isin(estacoes_excluir)]
     return df
 
 @st.cache_data
@@ -167,7 +167,7 @@ def criar_mapa_completo(df_completo):
 
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
-df_completo = pd.merge(df_graf, df_estacoes, left_on='Estacao', right_on='Estacao', how='left')
+df_completo = pd.merge(df_graf, df_estacoes, left_on='Estação', right_on='Estação', how='left')
 
 coordenadas = {
     'Porto Alegre': (-30.027158, -51.232180),
