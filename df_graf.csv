@@ -34,10 +34,10 @@ Linha José Júlio,estacaotaquari47,650.0,1000.0,,https://www.sgb.gov.br/sace/sa
 Linha Colombo,estacaotaquari55100,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=55&s=100
 Passo Carreiro,estacaotaquari5495,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=54&s=95
 Passo das Tainhas,estacaotaquari89,300.0,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=8&s=9
-Porto Alegre,,,,360.0,https://nivelguaiba.com.br/portoalegre.30days.json
-São Leopoldo,,,,450.0,https://nivelguaiba.com.br/saoleopoldo.30days.json
-São Sebastião do Caí,,,,1000.0,https://nivelguaiba.com.br/saosebastiaodocai.30days.json
-Feliz,,,,900.0,https://nivelguaiba.com.br/feliz.30days.json
+Porto Alegre,,,300,360.0,https://nivelguaiba.com.br/portoalegre.30days.json
+São Leopoldo,,,400,450.0,https://nivelguaiba.com.br/saoleopoldo.30days.json
+São Sebastião do Caí,,,700,1000.0,https://nivelguaiba.com.br/saosebastiaodocai.30days.json
+Feliz,,,700,900.0,https://nivelguaiba.com.br/feliz.30days.json
 Taquara,,,,500.0,https://nivelguaiba.com.br/taquara.30days.json
-Gravataí,,,,475.0,https://nivelguaiba.com.br/gravatai.30days.json
+Gravataí,,,375,475.0,https://nivelguaiba.com.br/gravatai.30days.json
 Dona Francisca,,,,750.0,https://nivelguaiba.com.br/donafrancisca.30days.json
