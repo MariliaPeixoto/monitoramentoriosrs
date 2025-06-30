@@ -78,7 +78,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
             plt.axhline(y=cota_alerta/100, color='orange', linestyle='--', label='Cota de Alerta')
         if not pd.isna(cota_inundacao):
             plt.axhline(y=cota_inundacao/100, color='red', linestyle='--', label='Cota de Inundação')
-        plt.title(f'{nome_estacao}')
+        plt.title(f'Nível do Rio - {nome_estacao}')
         plt.xlabel('Data e Hora')
         plt.ylabel('Nível (m)')
         plt.xticks(rotation=45)
@@ -140,11 +140,11 @@ def criar_mapa_completo(df_completo):
                 ax.set_xlabel('Data')
                 fig.autofmt_xdate()
                 if pd.notna(row['Cota de Atenção (cm)']):
-                    ax.axhline(row['Cota de Atenção (cm)'], color='gold', linestyle='--', label='Atenção')
+                    ax.axhline(row['Cota de Atenção (cm)'], color='gold', linestyle='--', label='Cota de Atenção')
                 if pd.notna(row['Cota de Alerta (cm)']):
-                    ax.axhline(row['Cota de Alerta (cm)'], color='orange', linestyle='--', label='Alerta')
+                    ax.axhline(row['Cota de Alerta (cm)'], color='orange', linestyle='--', label='Cota de Alerta')
                 if pd.notna(row['Cota de Inundação (cm)']):
-                    ax.axhline(row['Cota de Inundação (cm)'], color='red', linestyle='--', label='Inundação')
+                    ax.axhline(row['Cota de Inundação (cm)'], color='red', linestyle='--', label='Cota de Inundação')
                 ax.legend()
                 buf = io.BytesIO()
                 fig.savefig(buf, format='png')
