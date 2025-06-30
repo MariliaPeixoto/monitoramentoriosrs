@@ -79,19 +79,6 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         dados = response.json()
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
-        df['Nivel'] = pd.to_numeric(df['Nivel'], errors='coerce')
-        df.dropna(inplace=True)
-        ultimo_nivel = df['Nivel'].iloc[-1] * 100  # Convertendo para cm
-        # Determinar categoria da cota
-        if pd.notna(cota_inundacao) and ultimo_nivel >= cota_inundacao:
-            categoria = 'CotaDeInundao'
-        elif pd.notna(cota_alerta) and ultimo_nivel >= cota_alerta:
-            categoria = 'CotaDeAlerta'
-        elif pd.notna(cota_aten) and ultimo_nivel >= cota_aten:
-            categoria = 'CotaDeAteno'
-        else:
-            categoria = 'Normal'
-
         plt.figure(figsize=(8, 4))
         plt.plot(df['DataHora'], df['Nivel'], linestyle='-', linewidth=2, label='Nível do rio', color='#88CDF6')
         if not pd.isna(cota_aten):
@@ -144,8 +131,6 @@ def criar_mapa_completo(df_completo):
     for _, row in df_completo.iterrows():
         link = row['Link_graf']
         popup_html = ""
-        categoria = row['Ícone']  # valor padrão
-
         if link.endswith('.json'):
             popup_html, categoria = gerar_grafico_html_json(
                 link,
