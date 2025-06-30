@@ -178,7 +178,10 @@ def criar_mapa_completo(df_completo):
         <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
           </div>
         '''
-        mapa.get_root().html.add_child(folium.Element(legenda_html))
+        mapa.get_root().html.add_child(folium.Element(legenda_html))       
+        # Adiciona o CSS do Font Awesome
+        font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+        mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
 
 df_estacoes = carregar_dados()
