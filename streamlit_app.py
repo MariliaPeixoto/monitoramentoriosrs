@@ -71,7 +71,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
         plt.figure(figsize=(8, 4))
-        plt.plot(df['DataHora'], df['Nivel'], linestyle='-', linewidth=2,label='Nível do rio', color='#88CDF6')
+        plt.plot(df['DataHora'], df['Nivel'], linestyle='-', linewidth=2, label='Nível do rio', color='#88CDF6')
         if not pd.isna(cota_aten):
             plt.axhline(y=cota_aten/100, color='gold', linestyle='--', label='Cota de Atenção')
         if not pd.isna(cota_alerta):
