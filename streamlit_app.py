@@ -59,7 +59,7 @@ def carregar_dados():
 
 @st.cache_data
 def carregar_df_graf():
-    url = "https://raw.githubusercontent.com/rafjaa/streamlit-inundacao/main/df_graf.csv"
+    url = "https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/main/df_graf.csv"
     return pd.read_csv(url)
 
 @st.cache_data
