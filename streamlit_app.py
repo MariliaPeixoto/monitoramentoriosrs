@@ -144,8 +144,10 @@ def criar_mapa_completo(df_completo):
     for _, row in df_completo.iterrows():
         link = row['Link_graf']
         popup_html = ""
+        categoria = row['Ícone']  # valor padrão
+
         if link.endswith('.json'):
-            popup_html = gerar_grafico_html_json(
+            popup_html, categoria = gerar_grafico_html_json(
                 link,
                 nome_estacao=row['Nome'],
                 cota_aten=row['Cota de Atenção (cm)'],
