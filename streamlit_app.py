@@ -163,6 +163,22 @@ def criar_mapa_completo(df_completo):
             tooltip=row['Nome'],
             icon=folium.Icon(color=cor)
         ).add_to(mapa)
+        # Legenda (HTML)
+        legenda_html = '''
+        <div style="position: fixed;
+        bottom: 50px; left: 50px; width: 180px; height: 180px;
+        background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
+        padding: 10px;">
+        <b>Legenda</b><br>
+        <i class="fa fa-tint" style="color:green"></i> Normal<br>
+        <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
+        <i class="fa fa-tint" style="color:beige"></i> Cota de Atenção<br>
+        <i class="fa fa-tint" style="color:orange"></i> Cota de Alerta<br>
+        <i class="fa fa-tint" style="color:red"></i> Cota de Inundação<br>
+        <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
+          </div>
+        '''
+        mapa.get_root().html.add_child(folium.Element(legenda_html))
     return mapa
 
 df_estacoes = carregar_dados()
