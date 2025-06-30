@@ -79,6 +79,8 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         dados = response.json()
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
+        df['Nivel'] = pd.to_numeric(df['Nivel'], errors='coerce')
+        df.dropna(inplace=True)
         ultimo_nivel = df['Nivel'].iloc[-1] * 100  # Convertendo para cm
         # Determinar categoria da cota
         if pd.notna(cota_inundacao) and ultimo_nivel >= cota_inundacao:
