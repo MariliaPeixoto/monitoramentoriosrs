@@ -213,4 +213,4 @@ for estacao, (lat, lon) in coordenadas.items():
 
 st.subheader("Mapa Interativo das Estações Hidrológicas")
 mapa = criar_mapa_completo(df_completo)
-.st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
