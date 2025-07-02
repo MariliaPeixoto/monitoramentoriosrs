@@ -1,16 +1,16 @@
 import streamlit as st
 import pandas as pd
-import requests
-import matplotlib.pyplot as plt
 import folium
-from folium import IFrame
+from streamlit_folium import folium_static
+import requests
 from bs4 import BeautifulSoup
 import re
+from urllib.parse import urlparse, parse_qs
+import matplotlib.pyplot as plt
 import ast
 import io
 import base64
-from urllib.parse import urlparse, parse_qs
-from streamlit_folium import st_folium
+from folium import IFrame
 
 # Configurações da página
 st.set_page_config(
@@ -25,11 +25,10 @@ col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
 
-@st.cache_data
-def carregar_df_graf():
-    url = "https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/main/df_graf.csv"
-    return pd.read_csv(url)
+st.set_page_config(layout="wide")
+st.title("Monitoramento de Cotas de Inundação - RS")
 
+@st.cache_data
 def extrair_estacoes_sace(urls):
     all_dados = []
     pattern = re.compile(
@@ -55,6 +54,37 @@ def extrair_estacoes_sace(urls):
         except Exception as e:
             print(f"Erro ao processar {url}: {e}")
     return pd.DataFrame(all_dados)
+
+@st.cache_data
+def carregar_dados():
+    urls = [
+        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=uruguai",
+        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=taquari",
+        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=cai"
+    ]
+    df_comsc = extrair_estacoes_sace(urls)
+    estacoes_excluir = [
+        'estacaouruguai50186','estacaouruguai51102','estacaouruguai26218','estacaouruguai52105',
+        'estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133',
+        'estacaouruguai1117','estacaouruguai2029'
+    ]
+    df = df_comsc[~df_comsc['Estação'].isin(estacoes_excluir)]
+    url = "https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/main/df_graf.csv"
+    df_graf = pd.read_csv(url)
+    df_completo = pd.merge(df_graf, df, on='Estação', how='left')
+    coordenadas = {
+        'Porto Alegre': (-30.027158, -51.232180),
+        'São Leopoldo': (-29.758580, -51.146231),
+        'São Sebastião do Caí': (-29.590666, -51.384399),
+        'Feliz': (-29.456949,-51.309573),
+        'Taquara': (-29.641439,-50.802475),
+        'Gravataí': (-29.963965,-50.979510),
+        'Dona Francisca': (-29.627423,-53.352575)
+    }
+    for estacao, (lat, lon) in coordenadas.items():
+        df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
+        df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
+    return df_completo
 
 def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inundacao):
     try:
@@ -95,7 +125,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         html = f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
         return html, categoria
     except Exception as e:
-        return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'SemTransmissao'
+        return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'SemTransmisso'
 
 def criar_mapa_completo(df_completo):
     mapa = folium.Map(location=[df_completo['Latitude'].mean(), df_completo['Longitude'].mean()], zoom_start=7)
@@ -105,61 +135,32 @@ def criar_mapa_completo(df_completo):
         'CotaDeAlerta': 'orange',
         'CotaDeInundao': 'red',
         'CotaDeInundaoSevera': 'darkred',
-        'SemTransmissao': 'gray'
+        'SemTransmisso': 'gray'
     }
     for _, row in df_completo.iterrows():
-        link = row.get('Link_graf', '')
-        nome = row.get('Nome', 'Sem Nome')
+        link = row['Link_graf']
         popup_html = ""
-        categoria = row.get('Ícone', 'Normal')
+        categoria = row['Ícone']
         if link.endswith('.json'):
             popup_html, categoria = gerar_grafico_html_json(
                 link,
-                nome_estacao=nome,
-                cota_aten=row.get('Cota de Atenção (cm)'),
-                cota_alerta=row.get('Cota de Alerta (cm)'),
-                cota_inundacao=row.get('Cota de Inundação (cm)')
+                nome_estacao=row['Nome'],
+                cota_aten=row['Cota de Atenção (cm)'],
+                cota_alerta=row['Cota de Alerta (cm)'],
+                cota_inundacao=row['Cota de Inundação (cm)']
             )
         else:
-            popup_html = f"<p>{nome}<br><i>Sem dados disponíveis</i></p>"
+            popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
         cor = icone_cores.get(categoria, 'blue')
-        if pd.notna(row.get('Latitude')) and pd.notna(row.get('Longitude')):
-            folium.Marker(
-                location=[row['Latitude'], row['Longitude']],
-                popup=popup,
-                tooltip=nome,
-                icon=folium.Icon(color=cor)
-            ).add_to(mapa)
+        folium.Marker(
+            location=[row['Latitude'], row['Longitude']],
+            popup=popup,
+            tooltip=row['Nome'],
+            icon=folium.Icon(color=cor)
+        ).add_to(mapa)
     return mapa
 
-with st.spinner("Carregando dados..."):
-    df_graf = carregar_df_graf()
-    urls = [
-        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=uruguai",
-        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=taquari",
-        "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=cai"
-    ]
-    df_estacoes = extrair_estacoes_sace(urls)
-    estacoes_excluir = [
-        'estacaouruguai50186','estacaouruguai51102','estacaouruguai26218','estacaouruguai52105',
-        'estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133',
-        'estacaouruguai1117','estacaouruguai2029'
-    ]
-    df_estacoes = df_estacoes[~df_estacoes['Estação'].isin(estacoes_excluir)]
-    df_completo = pd.merge(df_graf, df_estacoes, on='Estação', how='left')
-    coordenadas = {
-        'Porto Alegre': (-30.027158, -51.232180),
-        'São Leopoldo': (-29.758580, -51.146231),
-        'São Sebastião do Caí': (-29.590666, -51.384399),
-        'Feliz': (-29.456949,-51.309573),
-        'Taquara': (-29.641439,-50.802475),
-        'Gravataí': (-29.963965,-50.979510),
-        'Dona Francisca': (-29.627423,-53.352575)
-    }
-    for estacao, (lat, lon) in coordenadas.items():
-        df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
-        df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
-
-mapa = criar_mapa_completo(df_completo)
-st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+df_completo = carregar_dados()
+mapa_final = criar_mapa_completo(df_completo)
+folium_static(mapa_final, width=1200, height=700, returned_objects=[])
