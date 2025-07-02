@@ -11,6 +11,7 @@ import io
 import base64
 from urllib.parse import urlparse, parse_qs
 from streamlit_folium import st_folium
+
 # Configurações da página
 st.set_page_config(
     page_title="Monitoramento rios - RS",
@@ -18,6 +19,7 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state='expanded'
 )
+
 col1, col2, col3 = st.columns([1,4,1])
 
 col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
@@ -79,6 +81,8 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         dados = response.json()
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
+        
+        # Gera o gráfico
         plt.figure(figsize=(8, 4))
         plt.plot(df['DataHora'], df['Nivel'], linestyle='-', linewidth=2, label='Nível do rio', color='#88CDF6')
         if not pd.isna(cota_aten):
@@ -93,14 +97,37 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         plt.xticks(rotation=45)
         plt.legend()
         plt.tight_layout()
+
+        # Salva a figura como PNG base64
         buffer = io.BytesIO()
         plt.savefig(buffer, format='png')
         buffer.seek(0)
         imagem_base64 = base64.b64encode(buffer.read()).decode('utf-8')
         plt.close()
-        return f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
+
+        popup_html = f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
+
+        # --- NOVO TRECHO: define a cor do ícone ---
+        cor_icone = 'green'  # padrão
+
+        # Pega o último valor
+        if not df.empty:
+            ultimo_nivel_m = df['Nivel'].iloc[-1]  # nível em metros
+            ultimo_nivel_cm = ultimo_nivel_m * 100  # converte para cm
+
+            if not pd.isna(cota_inundacao) and ultimo_nivel_cm >= cota_inundacao:
+                cor_icone = 'red'
+            elif not pd.isna(cota_alerta) and ultimo_nivel_cm >= cota_alerta:
+                cor_icone = 'orange'
+            elif not pd.isna(cota_aten) and ultimo_nivel_cm >= cota_aten:
+                cor_icone = 'beige'
+            else:
+                cor_icone = 'green'
+
+        return popup_html, cor_icone
+
     except Exception as e:
-        return f"<p>Erro ao gerar gráfico JSON: {e}</p>"
+        return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'gray'
 
 @st.cache_data
 def extrair_dados_sgb(link):
@@ -131,8 +158,9 @@ def criar_mapa_completo(df_completo):
     for _, row in df_completo.iterrows():
         link = row['Link_graf']
         popup_html = ""
+        cor = 'blue'  # cor padrão para caso nada seja retornado
         if link.endswith('.json'):
-            popup_html = gerar_grafico_html_json(
+            popup_html, cor = gerar_grafico_html_json(
                 link,
                 nome_estacao=row['Nome'],
                 cota_aten=row['Cota de Atenção (cm)'],
@@ -162,35 +190,45 @@ def criar_mapa_completo(df_completo):
                 buf.close()
                 plt.close(fig)
                 popup_html = f"<h4>{row['Nome']}</h4><img src='data:image/png;base64,{img_base64}' width='450'/>"
+                # Definindo cor do ícone também para HTML:
+                ultimo_valor = dados['nivel'].iloc[-1]
+                cor = 'green'
+                if pd.notna(row['Cota de Inundação (cm)']) and ultimo_valor >= row['Cota de Inundação (cm)']:
+                    cor = 'red'
+                elif pd.notna(row['Cota de Alerta (cm)']) and ultimo_valor >= row['Cota de Alerta (cm)']:
+                    cor = 'orange'
+                elif pd.notna(row['Cota de Atenção (cm)']) and ultimo_valor >= row['Cota de Atenção (cm)']:
+                    cor = 'beige'
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
+                cor = 'gray'
+        
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
-        cor = icone_cores.get(row['Icone'], 'blue')
         folium.Marker(
             location=[row['Latitude'], row['Longitude']],
             popup=popup,
             tooltip=row['Nome'],
             icon=folium.Icon(color=cor)
         ).add_to(mapa)
-        # Legenda (HTML)
-        legenda_html = '''
-        <div style="position: fixed;
-        bottom: 50px; left: 50px; width: 180px; height: 180px;
-        background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
-        padding: 10px; color: black;">
-        <b>Legenda</b><br>
-        <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
-        <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
-        <i class="fa fa-tint" style="color:#FFC88C"></i> Cota de Atenção<br>
-        <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
-        <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
-        <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
-          </div>
-        '''
-        mapa.get_root().html.add_child(folium.Element(legenda_html))       
-        # Adiciona o CSS do Font Awesome
-        font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
-        mapa.get_root().header.add_child(folium.Element(font_awesome_css))
+
+    # Legenda
+    legenda_html = '''
+    <div style="position: fixed;
+    bottom: 50px; left: 50px; width: 180px; height: 180px;
+    background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
+    padding: 10px; color: black;">
+    <b>Legenda</b><br>
+    <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
+    <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
+    <i class="fa fa-tint" style="color:#FFC88C"></i> Cota de Atenção<br>
+    <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
+    <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
+    <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
+      </div>
+    '''
+    mapa.get_root().html.add_child(folium.Element(legenda_html))
+    font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+    mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
 
 df_estacoes = carregar_dados()
