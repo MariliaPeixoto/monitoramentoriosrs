@@ -158,20 +158,31 @@ def criar_mapa_completo(df_completo):
     for _, row in df_completo.iterrows():
         link = row['Link_graf']
         popup_html = ""
-        cor = 'blue'  # cor padrão para caso nada seja retornado
         if link.endswith('.json'):
-            popup_html, cor = gerar_grafico_html_json(
+            popup_html = gerar_grafico_html_json(
                 link,
                 nome_estacao=row['Nome'],
                 cota_aten=row['Cota de Atenção (cm)'],
                 cota_alerta=row['Cota de Alerta (cm)'],
                 cota_inundacao=row['Cota de Inundação (cm)']
             )
+            # Adiciona nível ao DataFrame
+            try:
+                response = requests.get(link)
+                response.raise_for_status()
+                dados = response.json()
+                df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
+                df['DataHora'] = pd.to_datetime(df['DataHora'])
+                ultimo_nivel_m = df['Nivel'].iloc[-1]
+                ultimo_nivel_cm = ultimo_nivel_m * 100
+                df_completo.loc[df_completo['Nome'] == row['Nome'], 'Último Nível (cm)'] = ultimo_nivel_cm
+            except Exception as e:
+                print(f"Erro ao buscar nível JSON para {row['Nome']}: {e}")
         else:
             dados = extrair_dados_sgb(link)
             if dados is not None and not dados.empty:
                 fig, ax = plt.subplots()
-                dados.plot(x='timestamp', y='nivel', ax=ax,linestyle='-', linewidth=2, label='Nível do rio', legend=False, color='#88CDF6')
+                dados.plot(x='timestamp', y='nivel', ax=ax, linestyle='-', linewidth=2, label='Nível do rio', legend=False, color='#88CDF6')
                 ax.set_title(f"Nível do Rio - {row['Nome']}")
                 ax.set_ylabel('Nível (cm)')
                 ax.set_xlabel('Data')
@@ -190,46 +201,42 @@ def criar_mapa_completo(df_completo):
                 buf.close()
                 plt.close(fig)
                 popup_html = f"<h4>{row['Nome']}</h4><img src='data:image/png;base64,{img_base64}' width='450'/>"
-                # Definindo cor do ícone também para HTML:
+
+                # Adiciona nível ao DataFrame
                 ultimo_valor = dados['nivel'].iloc[-1]
-                cor = 'green'
-                if pd.notna(row['Cota de Inundação (cm)']) and ultimo_valor >= row['Cota de Inundação (cm)']:
-                    cor = 'red'
-                elif pd.notna(row['Cota de Alerta (cm)']) and ultimo_valor >= row['Cota de Alerta (cm)']:
-                    cor = 'orange'
-                elif pd.notna(row['Cota de Atenção (cm)']) and ultimo_valor >= row['Cota de Atenção (cm)']:
-                    cor = 'beige'
+                df_completo.loc[df_completo['Nome'] == row['Nome'], 'Último Nível (cm)'] = ultimo_valor
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
-                cor = 'gray'
         
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
+        cor = icone_cores.get(row['Icone'], 'blue')
         folium.Marker(
             location=[row['Latitude'], row['Longitude']],
             popup=popup,
             tooltip=row['Nome'],
             icon=folium.Icon(color=cor)
         ).add_to(mapa)
-
+    
     # Legenda
     legenda_html = '''
-    <div style="position: fixed;
-    bottom: 50px; left: 50px; width: 180px; height: 180px;
-    background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
-    padding: 10px; color: black;">
-    <b>Legenda</b><br>
-    <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
-    <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
-    <i class="fa fa-tint" style="color:#FFC88C"></i> Cota de Atenção<br>
-    <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
-    <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
-    <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
-      </div>
+        <div style="position: fixed;
+        bottom: 50px; left: 50px; width: 180px; height: 180px;
+        background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
+        padding: 10px; color: black;">
+        <b>Legenda</b><br>
+        <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
+        <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
+        <i class="fa fa-tint" style="color:#FFC88C"></i> Cota de Atenção<br>
+        <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
+        <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
+        <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
+          </div>
     '''
     mapa.get_root().html.add_child(folium.Element(legenda_html))
     font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
     mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
+
 # Botão para atualizar dados
 if st.button("🔃Atualizar dados"):
     st.cache_data.clear()
@@ -238,6 +245,26 @@ df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
 
 df_completo = pd.merge(df_graf, df_estacoes, left_on='Estação', right_on='Estação', how='left')
+
+# Classificar situação
+def classificar_situacao(row):
+    if str(row['Icone']) in ['CotaDeInundao', 'CotaDeInundaoSevera']:
+        return 'Inundação'
+    if pd.notna(row['Último Nível (cm)']) and pd.notna(row['Cota de Inundação (cm)']) and row['Último Nível (cm)'] >= row['Cota de Inundação (cm)']:
+        return 'Inundação'
+    elif pd.notna(row['Último Nível (cm)']) and pd.notna(row['Cota de Alerta (cm)']) and row['Último Nível (cm)'] >= row['Cota de Alerta (cm)']:
+        return 'Alerta'
+    elif pd.notna(row['Último Nível (cm)']) and pd.notna(row['Cota de Atenção (cm)']) and row['Último Nível (cm)'] >= row['Cota de Atenção (cm)']:
+        return 'Atenção'
+    elif pd.notna(row['Último Nível (cm)']):
+        return 'Normal'
+    else:
+        return 'Sem dados'
+
+df_completo['Situação'] = df_completo.apply(classificar_situacao, axis=1)
+
+# Contar municípios em situação de Inundação
+n_inundacao = df_completo[df_completo['Situação'] == 'Inundação']['Nome'].nunique()
 
 coordenadas = {
     'Porto Alegre': (-30.027158, -51.232180),
@@ -252,6 +279,13 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
 
-st.subheader("Mapa Interativo das Estações Hidrológicas")
-mapa = criar_mapa_completo(df_completo)
-st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+cola, colb = st.columns([4,1])
+
+with cola:
+    st.subheader("Mapa Interativo das Estações Hidrológicas")
+    mapa = criar_mapa_completo(df_completo)
+    st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+
+with colb:
+    st.markdown("### 📊 Resumo das Estações")
+    st.metric("🌊 Municípios em Inundação", n_inundacao)
