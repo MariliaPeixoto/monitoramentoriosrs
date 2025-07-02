@@ -208,7 +208,7 @@ def criar_mapa_completo(df_completo):
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
         
-        popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
+        popup = folium.Popup(IFrame(html=popup_html or "<p><i>Sem dados disponíveis</i></p>", width=470, height=370), max_width=470)
         cor = icone_cores.get(row['Icone'], 'blue')
         folium.Marker(
             location=[row['Latitude'], row['Longitude']],
