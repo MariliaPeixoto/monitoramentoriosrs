@@ -18,9 +18,9 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state='expanded'
 )
-col1, col2, col3 = st.columns([2,4,1])
+col1, col2, col3 = st.columns([1,4,1])
 
-col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=150)
+col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
 
