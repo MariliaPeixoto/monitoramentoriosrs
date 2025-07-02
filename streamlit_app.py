@@ -28,7 +28,7 @@ col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%2
 st.set_page_config(layout="wide")
 st.title("Monitoramento de Cotas de Inundação - RS")
 
-@st.cache_dataMore actions
+@st.cache_data
 def extrair_estacoes_sgb(urls):
     all_dados = []
     pattern = re.compile(
