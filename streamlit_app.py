@@ -1,17 +1,16 @@
 import streamlit as st
 import pandas as pd
-import folium
-from streamlit_folium import folium_static
 import requests
+import matplotlib.pyplot as plt
+import folium
+from folium import IFrame
 from bs4 import BeautifulSoup
 import re
-from urllib.parse import urlparse, parse_qs
-import matplotlib.pyplot as plt
 import ast
 import io
 import base64
-from folium import IFrame
-
+from urllib.parse import urlparse, parse_qs
+from streamlit_folium import st_folium
 # Configurações da página
 st.set_page_config(
     page_title="Monitoramento rios - RS",
@@ -19,14 +18,11 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state='expanded'
 )
+col1, col2, col3 = st.columns([2,4,1])
 
-col1, col2, col3 = st.columns([1,4,1])
 col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=150)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
-
-st.set_page_config(layout="wide")
-st.title("Monitoramento de Cotas de Inundação - RS")
 
 @st.cache_data
 def extrair_estacoes_sgb(urls):
@@ -216,5 +212,5 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
 
 st.subheader("Mapa Interativo das Estações")
-mapa = criar_mapa_completo(df_completo)
+mapa = criar_mapa_completo(df_completo)More actions
 st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
