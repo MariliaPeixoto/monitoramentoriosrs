@@ -33,7 +33,8 @@ def carregar_df_graf():
 def extrair_estacoes_sace(urls):
     all_dados = []
     pattern = re.compile(
-        r"""const\s+(estacao\w+)\s*=\s*L\.marker\(\[\s*(-?\d+\.\d+),\s*(-?\d+\.\d+)\s*\],\s*\{\s*icon:\s*(\w+)""", re.MULTILINE
+        r"""const\s+(estacao\w+)\s*=\s*L\.marker\(\[\s*(-?\d+\.\d+),\s*(-?\d+\.\d+)\s*\],\s*\{\s*icon:\s*(\w+)""",
+        re.MULTILINE
     )
     for url in urls:
         try:
@@ -94,22 +95,7 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         html = f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
         return html, categoria
     except Exception as e:
-        return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'SemTransmisso'
-
-def extrair_dados_sgb(link):
-    try:
-        response = requests.get(link)
-        response.raise_for_status()
-        soup = BeautifulSoup(response.text, 'html.parser')
-        script = next((s.string for s in soup.find_all('script') if s.string and 'const labels' in s.string and 'const valoresCota' in s.string), None)
-        if not script:
-            return None
-        labels = ast.literal_eval(re.search(r"const labels\s*=\s*(\[[^\]]*\])", script).group(1))
-        valores = ast.literal_eval(re.search(r"const valoresCota\s*=\s*(\[[^\]]*\])", script).group(1))
-        return pd.DataFrame({'timestamp': pd.to_datetime(labels), 'nivel': valores})
-    except Exception as e:
-        print(f"[SACE] Erro ao extrair de {link}: {e}")
-        return None
+        return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'SemTransmissao'
 
 def criar_mapa_completo(df_completo):
     mapa = folium.Map(location=[df_completo['Latitude'].mean(), df_completo['Longitude'].mean()], zoom_start=7)
@@ -119,53 +105,32 @@ def criar_mapa_completo(df_completo):
         'CotaDeAlerta': 'orange',
         'CotaDeInundao': 'red',
         'CotaDeInundaoSevera': 'darkred',
-        'SemTransmisso': 'gray'
+        'SemTransmissao': 'gray'
     }
     for _, row in df_completo.iterrows():
-        link = row['Link_graf']
+        link = row.get('Link_graf', '')
+        nome = row.get('Nome', 'Sem Nome')
         popup_html = ""
-        categoria = row['Ícone']
+        categoria = row.get('Ícone', 'Normal')
         if link.endswith('.json'):
             popup_html, categoria = gerar_grafico_html_json(
                 link,
-                nome_estacao=row['Nome'],
-                cota_aten=row['Cota de Atenção (cm)'],
-                cota_alerta=row['Cota de Alerta (cm)'],
-                cota_inundacao=row['Cota de Inundação (cm)']
+                nome_estacao=nome,
+                cota_aten=row.get('Cota de Atenção (cm)'),
+                cota_alerta=row.get('Cota de Alerta (cm)'),
+                cota_inundacao=row.get('Cota de Inundação (cm)')
             )
         else:
-            dados = extrair_dados_sgb(link)
-            if dados is not None and not dados.empty:
-                fig, ax = plt.subplots()
-                ax.plot(dados['timestamp'], dados['nivel'], linestyle='-', linewidth=2, color='#88CDF6', label='Nível do rio')
-                ax.set_title(f"Nível do Rio - {row['Nome']}")
-                ax.set_ylabel('Nível (cm)')
-                ax.set_xlabel('Data')
-                fig.autofmt_xdate()
-                if pd.notna(row['Cota de Atenção (cm)']):
-                    ax.axhline(row['Cota de Atenção (cm)'], color='gold', linestyle='--', label='Cota de Atenção')
-                if pd.notna(row['Cota de Alerta (cm)']):
-                    ax.axhline(row['Cota de Alerta (cm)'], color='orange', linestyle='--', label='Cota de Alerta')
-                if pd.notna(row['Cota de Inundação (cm)']):
-                    ax.axhline(row['Cota de Inundação (cm)'], color='red', linestyle='--', label='Cota de Inundação')
-                ax.legend()
-                buf = io.BytesIO()
-                fig.savefig(buf, format='png')
-                buf.seek(0)
-                img_base64 = base64.b64encode(buf.read()).decode('utf-8')
-                buf.close()
-                plt.close(fig)
-                popup_html = f"<h4>{row['Nome']}</h4><img src='data:image/png;base64,{img_base64}' width='450'/>"
-            else:
-                popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
+            popup_html = f"<p>{nome}<br><i>Sem dados disponíveis</i></p>"
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
         cor = icone_cores.get(categoria, 'blue')
-        folium.Marker(
-            location=[row['Latitude'], row['Longitude']],
-            popup=popup,
-            tooltip=row['Nome'],
-            icon=folium.Icon(color=cor)
-        ).add_to(mapa)
+        if pd.notna(row.get('Latitude')) and pd.notna(row.get('Longitude')):
+            folium.Marker(
+                location=[row['Latitude'], row['Longitude']],
+                popup=popup,
+                tooltip=nome,
+                icon=folium.Icon(color=cor)
+            ).add_to(mapa)
     return mapa
 
 with st.spinner("Carregando dados..."):
@@ -176,7 +141,11 @@ with st.spinner("Carregando dados..."):
         "https://www.sgb.gov.br/sace/sace_nivel/estacoes_mapa.php?bacia=cai"
     ]
     df_estacoes = extrair_estacoes_sace(urls)
-    estacoes_excluir = ['estacaouruguai50186','estacaouruguai51102','estacaouruguai26218','estacaouruguai52105','estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133','estacaouruguai1117','estacaouruguai2029']
+    estacoes_excluir = [
+        'estacaouruguai50186','estacaouruguai51102','estacaouruguai26218','estacaouruguai52105',
+        'estacaouruguai61253','estacaouruguai2439','estacaouruguai2235','estacaouruguai2133',
+        'estacaouruguai1117','estacaouruguai2029'
+    ]
     df_estacoes = df_estacoes[~df_estacoes['Estação'].isin(estacoes_excluir)]
     df_completo = pd.merge(df_graf, df_estacoes, on='Estação', how='left')
     coordenadas = {
@@ -193,4 +162,4 @@ with st.spinner("Carregando dados..."):
         df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
 
 mapa = criar_mapa_completo(df_completo)
-st_folium(mapa, width=1200, height=700)
+st_data = st_folium(mapa, width=1200, height=700)
