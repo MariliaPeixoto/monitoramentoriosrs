@@ -260,7 +260,9 @@ def classificar_situacao(row):
         return 'Normal'
     else:
         return 'Sem dados'
-
+        
+if 'Último Nível (cm)' not in df_completo.columns:
+    df_completo['Último Nível (cm)'] = pd.NA
 df_completo['Situação'] = df_completo.apply(classificar_situacao, axis=1)
 
 # Contar municípios em situação de Inundação
