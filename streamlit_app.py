@@ -233,7 +233,7 @@ def criar_mapa_completo(df_completo):
 # Botão para atualizar dados
 if st.button("🔃Atualizar dados"):
     st.cache_data.clear()
-    st.experimental_rerun()
+
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
 
