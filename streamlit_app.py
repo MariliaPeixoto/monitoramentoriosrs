@@ -230,7 +230,10 @@ def criar_mapa_completo(df_completo):
     font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
     mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
-
+# Botão para atualizar dados
+if st.button("🔃Atualizar dados"):
+    st.cache_data.clear()
+    st.experimental_rerun()
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
 
