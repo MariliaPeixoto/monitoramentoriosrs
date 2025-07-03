@@ -1,42 +1,42 @@
-Nome,Estação,Cota de Atenção (cm),Cota de Alerta (cm),Cota de Inundação (cm),Link_graf,Icone
-Dom Pedrito,estacaouruguai68299,940.0,1020.0,1100.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=68&s=299,
-Rosário do Sul,estacaouruguai3153,470.0,570.0,670.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=31&s=53,
-Quaraí,estacaouruguai27240,600.0,750.0,950.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=27&s=240,
-Passo do Osório,estacaouruguai70300,760.0,860.0,960.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=70&s=300,
-Passo dos Britos,estacaouruguai71315,,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=71&s=315,
-Manoel Viana,estacaouruguai3051,760.0,860.0,960.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=30&s=51,
-Alegrete,estacaouruguai28177,750.0,850.0,970.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=28&s=177,
-Uruguaiana,estacaouruguai2950,650.0,750.0,850.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=29&s=50,
-Passo Mariano Pinto,estacaouruguai58232,750.0,900.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=58&s=232,
-Itaqui,estacaouruguai32190,630.0,730.0,830.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=32&s=190,
-Passo São Borja,estacaouruguai33266,700.0,800.0,900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=33&s=266,
-Garruchos,estacaouruguai3459,1300.0,1400.0,1500.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=34&s=59,
-Porto Lucena,estacaouruguai3561,800.0,900.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=35&s=61,
-Porto Mauá,estacaouruguai56110,800.0,950.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=56&s=110,
-Alto Uruguai,estacaouruguai57228,1700.0,1900.0,2100.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=57&s=228,
-Itapiranga,estacaouruguai3663,500.0,600.0,730.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=36&s=63,
-Iraí,estacaouruguai3766,500.0,600.0,800.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=37&s=66,
-Passo Montenegro - SAT,estacaocai122187,300.0,400.0,600.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=122&s=187,
-Barca do caí - SAT,estacaocai100163,500.0,700.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=100&s=163,
-Costa do Rio Cadeia - SAT,estacaocai91167,500.0,700.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=91&s=167,
-Feliz - SAT,estacaocai117176,450.0,700.0,900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=117&s=176,
-Vale Real,estacaocai123190,,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=123&s=190,
-Nova Palmira - SAT,estacaocai98171,200.0,300.0,470.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=98&s=171,
-Taquari,estacaotaquari743,400.0,650.0,850.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=7&s=43,
-Porto Mariante,estacaotaquari647,700.0,1100.0,1400.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=6&s=47,
-Bom Retiro do Sul,estacaotaquari563,900.0,1200.0,1650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=5&s=63,
-Estrela,estacaotaquari11,1500.0,1700.0,1900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=1&s=1,
-Barra do Fão,estacaotaquari3356,400.0,600.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=33&s=56,
-Encantado,estacaotaquari23,500.0,900.0,1200.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=2&s=3,
-Muçum,estacaotaquari35,500.0,900.0,1800.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=3&s=5,
-Santa Tereza,estacaotaquari3254,600.0,900.0,1500.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=32&s=54,
-Linha José Júlio,estacaotaquari47,650.0,1000.0,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=4&s=7,
-Linha Colombo,estacaotaquari55100,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=55&s=100,
-Passo Carreiro,estacaotaquari5495,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=54&s=95,
-Passo das Tainhas,estacaotaquari89,300.0,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=8&s=9,
-Porto Alegre,,,300,360.0,https://nivelguaiba.com.br/portoalegre.30days.json,
-São Leopoldo,,,400,450.0,https://nivelguaiba.com.br/saoleopoldo.30days.json,
-São Sebastião do Caí,,,700,1000.0,https://nivelguaiba.com.br/saosebastiaodocai.30days.json,
+Nome,Estação,Cota de Atenção (cm),Cota de Alerta (cm),Cota de Inundação (cm),Link_graf
+Dom Pedrito,estacaouruguai68299,940.0,1020.0,1100.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=68&s=299
+Rosário do Sul,estacaouruguai3153,470.0,570.0,670.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=31&s=53
+Quaraí,estacaouruguai27240,600.0,750.0,950.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=27&s=240
+Passo do Osório,estacaouruguai70300,760.0,860.0,960.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=70&s=300
+Passo dos Britos,estacaouruguai71315,,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=71&s=315
+Manoel Viana,estacaouruguai3051,760.0,860.0,960.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=30&s=51
+Alegrete,estacaouruguai28177,750.0,850.0,970.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=28&s=177
+Uruguaiana,estacaouruguai2950,650.0,750.0,850.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=29&s=50
+Passo Mariano Pinto,estacaouruguai58232,750.0,900.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=58&s=232
+Itaqui,estacaouruguai32190,630.0,730.0,830.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=32&s=190
+Passo São Borja,estacaouruguai33266,700.0,800.0,900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=33&s=266
+Garruchos,estacaouruguai3459,1300.0,1400.0,1500.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=34&s=59
+Porto Lucena,estacaouruguai3561,800.0,900.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=35&s=61
+Porto Mauá,estacaouruguai56110,800.0,950.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=56&s=110
+Alto Uruguai,estacaouruguai57228,1700.0,1900.0,2100.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=57&s=228
+Itapiranga,estacaouruguai3663,500.0,600.0,730.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=36&s=63
+Iraí,estacaouruguai3766,500.0,600.0,800.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=37&s=66
+Passo Montenegro - SAT,estacaocai122187,300.0,400.0,600.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=122&s=187
+Barca do caí - SAT,estacaocai100163,500.0,700.0,1050.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=100&s=163
+Costa do Rio Cadeia - SAT,estacaocai91167,500.0,700.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=91&s=167
+Feliz - SAT,estacaocai117176,450.0,700.0,900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=117&s=176
+Vale Real,estacaocai123190,,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=123&s=190
+Nova Palmira - SAT,estacaocai98171,200.0,300.0,470.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=cai&pm=98&s=171
+Taquari,estacaotaquari743,400.0,650.0,850.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=7&s=43
+Porto Mariante,estacaotaquari647,700.0,1100.0,1400.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=6&s=47
+Bom Retiro do Sul,estacaotaquari563,900.0,1200.0,1650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=5&s=63
+Estrela,estacaotaquari11,1500.0,1700.0,1900.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=1&s=1
+Barra do Fão,estacaotaquari3356,400.0,600.0,1000.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=33&s=56
+Encantado,estacaotaquari23,500.0,900.0,1200.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=2&s=3
+Muçum,estacaotaquari35,500.0,900.0,1800.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=3&s=5
+Santa Tereza,estacaotaquari3254,600.0,900.0,1500.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=32&s=54
+Linha José Júlio,estacaotaquari47,650.0,1000.0,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=4&s=7
+Linha Colombo,estacaotaquari55100,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=55&s=100
+Passo Carreiro,estacaotaquari5495,400.0,500.0,650.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=54&s=95
+Passo das Tainhas,estacaotaquari89,300.0,,,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=taquari&pm=8&s=9
+Porto Alegre,,,300,360.0,https://nivelguaiba.com.br/portoalegre.30days.json
+São Leopoldo,,,400,450.0,https://nivelguaiba.com.br/saoleopoldo.30days.json
+São Sebastião do Caí,,,700,1000.0,https://nivelguaiba.com.br/saosebastiaodocai.30days.json
 Feliz,,,700,900.0,https://nivelguaiba.com.br/feliz.30days.json,
 Taquara,,,,500.0,https://nivelguaiba.com.br/taquara.30days.json,
 Gravataí,,,375,475.0,https://nivelguaiba.com.br/gravatai.30days.json,
