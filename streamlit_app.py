@@ -22,9 +22,14 @@ st.set_page_config(
 
 col1, col2, col3 = st.columns([1,4,1])
 
-col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
+# Botão para atualizar dados
+with col3:
+    col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
+    if st.button("🔃Atualizar dados"):
+    st.cache_data.clear()
+
 
 @st.cache_data
 def extrair_estacoes_sgb(urls):
@@ -234,10 +239,7 @@ def criar_mapa_completo(df_completo):
     font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
     mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
-# Botão para atualizar dados
-with col3:
-    if st.button("🔃Atualizar dados"):
-    st.cache_data.clear()
+
 
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
@@ -271,5 +273,5 @@ with col_card:
     locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
     nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
     st.write("Locais com Cota de Inundação:")
-    st.dataframe(nome_inund, use_container_width=True, hide_index=True, hide_title=True)
+    st.dataframe(nome_inund, use_container_width=True, hide_index=True)
     
