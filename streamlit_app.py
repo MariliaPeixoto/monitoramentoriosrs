@@ -235,7 +235,8 @@ def criar_mapa_completo(df_completo):
     mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
 # Botão para atualizar dados
-if st.button("🔃Atualizar dados"):
+with col3:
+    if st.button("🔃Atualizar dados"):
     st.cache_data.clear()
 
 df_estacoes = carregar_dados()
