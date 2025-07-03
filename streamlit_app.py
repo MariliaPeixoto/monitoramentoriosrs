@@ -1,5 +1,3 @@
-02/07 antes de tentar fazer card
-
 import streamlit as st
 import pandas as pd
 import requests
