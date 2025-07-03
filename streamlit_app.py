@@ -260,3 +260,5 @@ st.subheader("Mapa Interativo das Estações Hidrológicas")
 #mapa = criar_mapa_completo(df_completo)
 #st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
 df_completo
+df_estacoes
+df_graf
