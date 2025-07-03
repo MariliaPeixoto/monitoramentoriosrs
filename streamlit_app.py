@@ -21,14 +21,10 @@ st.set_page_config(
 )
 
 col1, col2, col3 = st.columns([1,4,1])
-
+col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
-# Botão para atualizar dados
-with col3:
-    col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
-    if st.button("🔃Atualizar dados"):
-    st.cache_data.clear()
+
 
 
 @st.cache_data
@@ -240,6 +236,9 @@ def criar_mapa_completo(df_completo):
     mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
 
+# Botão para atualizar dados
+if st.button("🔃Atualizar dados"):
+st.cache_data.clear()
 
 df_estacoes = carregar_dados()
 df_graf = carregar_df_graf()
