@@ -257,12 +257,18 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
     
 col_mapa, col_card = st.columns([4,1])
+
 with col_mapa:
     st.subheader("Mapa Interativo das Estações Hidrológicas")
     mapa = criar_mapa_completo(df_completo)
     st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+    
 with col_card:
     # Vendo quantos municipios estao com o icone CotaDeInundao
     muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
-    nome_inund = df_completo[df_completo['Icone'] == 'CotaDeInundao']['Nome'].unique()
     inund = st.metric(label="Municípios em inundação", value=muni_cota_inund)
+    nome_inund = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+    st.write("Locais com Cota de Inundação:")
+    st.write(locais_inundacao['Nome'])
+
+    
