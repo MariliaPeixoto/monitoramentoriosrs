@@ -29,7 +29,6 @@ with col3:
     if st.button("🔃Atualizar dados"):
         st.cache_data.clear()
 
-
 @st.cache_data
 def extrair_estacoes_sgb(urls):
     all_dados = []
@@ -267,6 +266,7 @@ with col_mapa:
     st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
     
 with col_card:
+    st.subheader(" ")
     # Vendo quantos municipios estao com o icone CotaDeInundao
     muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
     inund = st.metric(label="Municípios em inundação", value=muni_cota_inund)
