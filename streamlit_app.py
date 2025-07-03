@@ -24,7 +24,7 @@ st.markdown(
     """
     <style>
     .stApp {
-        background-image: url("https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/6fac47d6e31c2dec725a47bbedec867396ead746/planodefundo.jpg");
+        background-image: url("https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/a43d89dc8156e33262f1332691ada15964be8a33/fundo.jpg");
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: fixed;
