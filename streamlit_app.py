@@ -269,6 +269,6 @@ with col_card:
     inund = st.metric(label="Municípios em inundação", value=muni_cota_inund)
     nome_inund = df_completo[df_completo['Icone'] == 'CotaDeInundao']
     st.write("Locais com Cota de Inundação:")
-    st.write(nome_inund['Nome'])
+    st.table(nome_inund['Nome'])
 
     
