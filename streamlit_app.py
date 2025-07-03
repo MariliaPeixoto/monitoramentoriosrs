@@ -271,5 +271,5 @@ with col_card:
     locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
     nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
     st.write("Locais com Cota de Inundação:")
-    st.dataframe(nome_inund, use_container_width=True, hide_index=True)
+    st.dataframe(nome_inund, use_container_width=True, hide_index=True, hide_title=True)
     
