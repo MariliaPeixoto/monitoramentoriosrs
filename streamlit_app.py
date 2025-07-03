@@ -25,6 +25,7 @@ col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
 with col3:
+    st.subheader(" ")
     # Botão para atualizar dados
     if st.button("🔃Atualizar dados"):
         st.cache_data.clear()
