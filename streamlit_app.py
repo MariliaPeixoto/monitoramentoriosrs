@@ -19,7 +19,21 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state='expanded'
 )
-
+#Imagem de fundo
+st.markdown(
+    """
+    <style>
+    .stApp {
+        background-image: url("https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/6fac47d6e31c2dec725a47bbedec867396ead746/planodefundo.jpg");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+# Cabeçalho
 col1, col2, col3 = st.columns([1,4,1])
 col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
