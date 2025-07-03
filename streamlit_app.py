@@ -83,9 +83,8 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         df = pd.DataFrame(dados.items(), columns=['DataHora', 'Nivel'])
         df['DataHora'] = pd.to_datetime(df['DataHora'])
         df['Nivel'] = df['Nivel'].astype(float)
-        ultimo_nivel = df['Nivel'].iloc[-1] * 100  # Convertendo para cm
+        ultimo_nivel = df['Nivel'].iloc[-1] * 100  # em cm
 
-        # Determinar categoria da cota
         if pd.notna(cota_inundacao) and ultimo_nivel >= cota_inundacao:
             categoria = 'CotaDeInundao'
         elif pd.notna(cota_alerta) and ultimo_nivel >= cota_alerta:
@@ -95,17 +94,11 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         else:
             categoria = 'Normal'
 
-        # Gerar gráfico
         plt.figure(figsize=(8, 4))
-        plt.plot(df['DataHora'], df['Nivel'], linestyle='-', linewidth=2, label='Nível do rio', color='#88CDF6')
-
-        if not pd.isna(cota_aten):
-            plt.axhline(y=cota_aten/100, color='gold', linestyle='--', label='Cota de Atenção')
-        if not pd.isna(cota_alerta):
-            plt.axhline(y=cota_alerta/100, color='orange', linestyle='--', label='Cota de Alerta')
-        if not pd.isna(cota_inundacao):
-            plt.axhline(y=cota_inundacao/100, color='red', linestyle='--', label='Cota de Inundação')
-
+        plt.plot(df['DataHora'], df['Nivel'], color='#88CDF6', linewidth=2, label='Nível do rio')
+        if pd.notna(cota_aten): plt.axhline(cota_aten/100, color='gold', linestyle='--', label='Cota de Atenção')
+        if pd.notna(cota_alerta): plt.axhline(cota_alerta/100, color='orange', linestyle='--', label='Cota de Alerta')
+        if pd.notna(cota_inundacao): plt.axhline(cota_inundacao/100, color='red', linestyle='--', label='Cota de Inundação')
         plt.title(f'{nome_estacao}')
         plt.xlabel('Data e Hora')
         plt.ylabel('Nível (m)')
@@ -113,17 +106,16 @@ def gerar_grafico_html_json(link, nome_estacao, cota_aten, cota_alerta, cota_inu
         plt.legend()
         plt.tight_layout()
 
-        buffer = io.BytesIO()
-        plt.savefig(buffer, format='png')
-        buffer.seek(0)
-        imagem_base64 = base64.b64encode(buffer.read()).decode('utf-8')
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png')
+        buf.seek(0)
+        imagem_base64 = base64.b64encode(buf.read()).decode('utf-8')
         plt.close()
 
         html = f'<h4>{nome_estacao}</h4><img src="data:image/png;base64,{imagem_base64}" width="450"/>'
         return html, categoria
     except Exception as e:
         return f"<p>Erro ao gerar gráfico JSON: {e}</p>", 'SemTransmisso'
-
 @st.cache_data
 def extrair_dados_sgb(link):
     try:
@@ -140,8 +132,8 @@ def extrair_dados_sgb(link):
         print(f"[SACE] Erro ao extrair de {link}: {e}")
         return None
 
-def criar_mapa_completo(df_completo):
-    mapa = folium.Map(location=[df_completo['Latitude'].mean(), df_completo['Longitude'].mean()], zoom_start=7)
+def criar_mapa_completo(df):
+    mapa = folium.Map(location=[df['Latitude'].mean(), df['Longitude'].mean()], zoom_start=7)
 
     icone_cores = {
         'Normal': 'green',
@@ -152,59 +144,46 @@ def criar_mapa_completo(df_completo):
         'SemTransmisso': 'gray'
     }
 
-    for idx, row in df_completo.iterrows():
+    for idx, row in df.iterrows():
         link = row['Link_graf']
         popup_html = ""
-        categoria = row['Ícone']  # valor padrão (pode ser NaN)
+        categoria = row['Ícone'] if pd.notna(row['Ícone']) else None
 
         if link.endswith('.json'):
             popup_html, categoria_calc = gerar_grafico_html_json(
                 link,
-                nome_estacao=row['Nome'],
-                cota_aten=row['Cota de Atenção (cm)'],
-                cota_alerta=row['Cota de Alerta (cm)'],
-                cota_inundacao=row['Cota de Inundação (cm)']
+                row['Nome'],
+                row['Cota de Atenção (cm)'],
+                row['Cota de Alerta (cm)'],
+                row['Cota de Inundação (cm)']
             )
-            # Atualiza o valor da categoria se o campo 'Ícone' for vazio
-            if pd.isna(row['Ícone']):
+            if categoria is None:
                 categoria = categoria_calc
-                df_completo.at[idx, 'Ícone'] = categoria_calc
-            else:
-                categoria = row['Ícone']
+                df.at[idx, 'Ícone'] = categoria
         else:
             dados = extrair_dados_sgb(link)
             if dados is not None and not dados.empty:
                 fig, ax = plt.subplots()
-                ax.plot(dados['timestamp'], dados['nivel'], linestyle='-', linewidth=2, color='#88CDF6', label='Nível do rio')
-                ax.set_title(f"Nível do Rio - {row['Nome']}")
-                ax.set_ylabel('Nível (cm)')
-                ax.set_xlabel('Data')
-                fig.autofmt_xdate()
-
-                if pd.notna(row['Cota de Atenção (cm)']):
-                    ax.axhline(row['Cota de Atenção (cm)'], color='gold', linestyle='--', label='Cota de Atenção')
-                if pd.notna(row['Cota de Alerta (cm)']):
-                    ax.axhline(row['Cota de Alerta (cm)'], color='orange', linestyle='--', label='Cota de Alerta')
-                if pd.notna(row['Cota de Inundação (cm)']):
-                    ax.axhline(row['Cota de Inundação (cm)'], color='red', linestyle='--', label='Cota de Inundação')
+                ax.plot(dados['timestamp'], dados['nivel'], color='#88CDF6', linewidth=2, label='Nível do rio')
+                if pd.notna(row['Cota de Atenção (cm)']): ax.axhline(row['Cota de Atenção (cm)'], color='gold', linestyle='--', label='Cota de Atenção')
+                if pd.notna(row['Cota de Alerta (cm)']): ax.axhline(row['Cota de Alerta (cm)'], color='orange', linestyle='--', label='Cota de Alerta')
+                if pd.notna(row['Cota de Inundação (cm)']): ax.axhline(row['Cota de Inundação (cm)'], color='red', linestyle='--', label='Cota de Inundação')
                 ax.legend()
-
+                fig.autofmt_xdate()
                 buf = io.BytesIO()
                 fig.savefig(buf, format='png')
                 buf.seek(0)
                 img_base64 = base64.b64encode(buf.read()).decode('utf-8')
                 buf.close()
                 plt.close(fig)
-
                 popup_html = f"<h4>{row['Nome']}</h4><img src='data:image/png;base64,{img_base64}' width='450'/>"
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
-            if pd.isna(row['Ícone']):
-                categoria = 'SemTransmisso'
-                df_completo.at[idx, 'Ícone'] = categoria
+                categoria = categoria or 'SemTransmisso'
+                df.at[idx, 'Ícone'] = categoria
 
-        popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
         cor = icone_cores.get(categoria, 'blue')
+        popup = folium.Popup(IFrame(popup_html, width=470, height=370), max_width=470)
 
         folium.Marker(
             location=[row['Latitude'], row['Longitude']],
@@ -212,13 +191,12 @@ def criar_mapa_completo(df_completo):
             tooltip=row['Nome'],
             icon=folium.Icon(color=cor)
         ).add_to(mapa)
-
-    # Legenda (HTML)
+ # Legenda
     legenda_html = '''
     <div style="position: fixed;
     bottom: 50px; left: 50px; width: 180px; height: 180px;
     background-color: white; border:2px solid grey; z-index:9999; font-size:14px;
-    padding: 10px;">
+    padding: 10px; color: black;">
     <b>Legenda</b><br>
     <i class="fa fa-tint" style="color:#6FAC25"></i> Normal<br>
     <i class="fa fa-tint" style="color:gray"></i> Sem Transmissão<br>
@@ -226,10 +204,14 @@ def criar_mapa_completo(df_completo):
     <i class="fa fa-tint" style="color:#F0932F"></i> Cota de Alerta<br>
     <i class="fa fa-tint" style="color:#D13D29"></i> Cota de Inundação<br>
     <i class="fa fa-tint" style="color:purple"></i> Cota de Inundação Severa<br>
-    </div>
+      </div>
     '''
     mapa.get_root().html.add_child(folium.Element(legenda_html))
+    font_awesome_css = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css'
+    mapa.get_root().header.add_child(folium.Element(font_awesome_css))
     return mapa
+
+
 # Botão para atualizar dados
 if st.button("🔃Atualizar dados"):
     st.cache_data.clear()
