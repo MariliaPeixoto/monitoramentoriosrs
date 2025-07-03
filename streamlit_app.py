@@ -24,11 +24,6 @@ col1, col2, col3 = st.columns([1,4,1])
 col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
-with col3:
-    st.subheader(" ")
-    # Botão para atualizar dados
-    if st.button("🔃Atualizar dados"):
-        st.cache_data.clear()
 
 @st.cache_data
 def extrair_estacoes_sgb(urls):
@@ -259,7 +254,7 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
     
-col_mapa, col_card, col_vazia = st.columns([4,1,1])
+col_mapa, col_card, col_botao = st.columns([4,1,1])
 
 with col_mapa:
     st.subheader("Mapa Interativo das Estações Hidrológicas")
@@ -275,4 +270,10 @@ with col_card:
     nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
     st.write("Locais com Cota de Inundação:")
     st.dataframe(nome_inund, use_container_width=True, hide_index=True)
+
+with col_botao:
+    st.subheader(" ")
+    # Botão para atualizar dados
+    if st.button("🔃Atualizar dados"):
+        st.cache_data.clear()
     
