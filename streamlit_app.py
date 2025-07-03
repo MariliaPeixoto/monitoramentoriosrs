@@ -254,7 +254,7 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
     
-col_mapa, col_card, col_botao = st.columns([5,2,1])
+col_mapa, col_card, col_botao = st.columns([5,1,1])
 
 with col_mapa:
     st.subheader("Mapa Interativo das Estações Hidrológicas")
