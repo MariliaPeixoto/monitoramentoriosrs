@@ -27,7 +27,7 @@ col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%2
 #Linha divisória do cabeçalho e dados
 st.markdown(
     """
-    <hr style="border: none; height: 10px; background-color: #44546A;" />
+    <hr style="border: none; height: 30px; background-color: #44546A;" />
     """,
     unsafe_allow_html=True
 )
