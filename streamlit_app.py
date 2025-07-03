@@ -158,7 +158,7 @@ def criar_mapa_completo(df_completo):
     for idx, row in df_completo.iterrows():
         link = row['Link_graf']
         popup_html = ""
-        categoria = row['Ícone']  # valor padrão (pode ser NaN)
+        categoria = row['Icone']  # valor padrão (pode ser NaN)
 
         if link.endswith('.json'):
             popup_html, categoria_calc = gerar_grafico_html_json(
@@ -168,12 +168,12 @@ def criar_mapa_completo(df_completo):
                 cota_alerta=row['Cota de Alerta (cm)'],
                 cota_inundacao=row['Cota de Inundação (cm)']
             )
-            # Atualiza o valor da categoria se o campo 'Ícone' for vazio
-            if pd.isna(row['Ícone']):
+            # Atualiza o valor da categoria se o campo 'Icone' for vazio
+            if pd.isna(row['Icone']):
                 categoria = categoria_calc
-                df_completo.at[idx, 'Ícone'] = categoria_calc
+                df_completo.at[idx, 'Icone'] = categoria_calc
             else:
-                categoria = row['Ícone']
+                categoria = row['Icone']
         else:
             dados = extrair_dados_sgb(link)
             if dados is not None and not dados.empty:
@@ -202,9 +202,9 @@ def criar_mapa_completo(df_completo):
                 popup_html = f"<h4>{row['Nome']}</h4><img src='data:image/png;base64,{img_base64}' width='450'/>"
             else:
                 popup_html = f"<p>{row['Nome']}<br><i>Sem dados disponíveis</i></p>"
-            if pd.isna(row['Ícone']):
+            if pd.isna(row['Icone']):
                 categoria = 'SemTransmisso'
-                df_completo.at[idx, 'Ícone'] = categoria
+                df_completo.at[idx, 'Icone'] = categoria
 
         popup = folium.Popup(IFrame(html=popup_html, width=470, height=370), max_width=470)
         cor = icone_cores.get(categoria, 'blue')
