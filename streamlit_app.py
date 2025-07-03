@@ -28,6 +28,7 @@ st.markdown(
         background-size: cover;
         background-repeat: no-repeat;
         background-attachment: scroll; 
+        position: relative;
     }
     </style>
     """,
