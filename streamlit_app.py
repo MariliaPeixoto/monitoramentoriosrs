@@ -46,7 +46,7 @@ def extrair_estacoes_sgb(urls):
                     "Estação": nome,
                     "Latitude": float(lat),
                     "Longitude": float(lon),
-                    "Ícone": icone
+                    "Icone": icone
                 })
         except Exception as e:
             print(f"Erro ao processar {url}: {e}")
