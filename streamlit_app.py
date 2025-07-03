@@ -22,8 +22,7 @@ st.set_page_config(
 #Imagem de fundo
 st.markdown(
     """
-    <style>
-    .stApp {
+    <style>.stApp {
         background-image: url("https://raw.githubusercontent.com/MariliaPeixoto/monitoramentoriosrs/6fac47d6e31c2dec725a47bbedec867396ead746/planodefundo.jpg");
         background-size: cover;
         background-position: center;
