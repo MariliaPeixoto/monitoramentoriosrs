@@ -267,8 +267,8 @@ with col_card:
     # Vendo quantos municipios estao com o icone CotaDeInundao
     muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
     inund = st.metric(label="Municípios em inundação", value=muni_cota_inund)
-    nome_inund = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+    locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+    nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
     st.write("Locais com Cota de Inundação:")
     st.table(nome_inund['Nome'])
-
     
