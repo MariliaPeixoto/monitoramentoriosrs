@@ -1,4 +1,4 @@
-Nome,Estação,Cota de Atenção (cm),Cota de Alerta (cm),Cota de Inundação (cm),Link_graf,Ícone
+Nome,Estação,Cota de Atenção (cm),Cota de Alerta (cm),Cota de Inundação (cm),Link_graf,Icone
 Dom Pedrito,estacaouruguai68299,940.0,1020.0,1100.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=68&s=299,
 Rosário do Sul,estacaouruguai3153,470.0,570.0,670.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=31&s=53,
 Quaraí,estacaouruguai27240,600.0,750.0,950.0,https://www.sgb.gov.br/sace/sace_nivel/relatorio.php?apenas_grafico=sim&bacia=uruguai&pm=27&s=240,
