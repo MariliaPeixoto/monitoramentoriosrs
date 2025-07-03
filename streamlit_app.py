@@ -264,6 +264,7 @@ with col_mapa:
     st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
     
 with col_card:
+    df_completo
     # Vendo quantos municipios estao com o icone CotaDeInundao
     muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
     inund = st.metric(label="Municípios em inundação", value=muni_cota_inund)
