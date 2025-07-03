@@ -19,19 +19,18 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state='expanded'
 )
-#Imagem de fundo
-st.markdown(
-    """
-    <hr style="border: none; height: 100px; background-color: #44546A;" />
-    """,
-    unsafe_allow_html=True
-)
-
 # Cabeçalho
 col1, col2, col3 = st.columns([1,4,1])
 col3.image('https://github.com/andrejarenkow/csv/blob/master/logo_cevs%20(2).png?raw=true', width=130)
 col2.title('Monitoramento de Cotas de Inundação - Rio Grande do Sul')
 col1.image('https://github.com/andrejarenkow/csv/blob/master/logo_estado%20(3)%20(1).png?raw=true', width=230)
+#Linha divisória do cabeçalho e dados
+st.markdown(
+    """
+    <hr style="border: none; height: 10px; background-color: #44546A;" />
+    """,
+    unsafe_allow_html=True
+)
 
 @st.cache_data
 def extrair_estacoes_sgb(urls):
