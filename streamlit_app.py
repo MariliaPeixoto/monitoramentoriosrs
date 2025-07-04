@@ -262,55 +262,54 @@ for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
 
 # LAYOUT COM 3 COLUNAS
-
 col_mapa, col_card, col_botao = st.columns([5,1,1])
 
 with col_mapa:
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
-        """, unsafe_allow_html=True)
-        st.subheader("Mapa Interativo das Estações Hidrológicas")
-        mapa = criar_mapa_completo(df_completo)
-        st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
-        st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+            <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
+        """, unsafe_allow_html=True)
+        st.subheader("Mapa Interativo das Estações Hidrológicas")
+        mapa = criar_mapa_completo(df_completo)
+        st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+        st.markdown("</div>", unsafe_allow_html=True)
 
 with col_card:
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #e8f4ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-        """, unsafe_allow_html=True)
-        st.subheader(" ")
-        muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
-        inund = st.metric(label="Nº municípios em inundação", value = muni_cota_inund)
-        locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
-        nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
-        st.write("Municípios em Cota de Inundação:")
-        st.dataframe(nome_inund, use_container_width=True, hide_index=True)
-        st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+            <div style="background-color: #e8f4ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+        """, unsafe_allow_html=True)
+        st.subheader(" ")
+        muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
+        inund = st.metric(label="Nº municípios em inundação", value = muni_cota_inund)
+        locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+        nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
+        st.write("Municípios em Cota de Inundação:")
+        st.dataframe(nome_inund, use_container_width=True, hide_index=True)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #fff4e6; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
-        """, unsafe_allow_html=True)
-        muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
-        alerta = st.metric(label="Nº municípios em alerta", value = muni_cota_alerta)
-        st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+            <div style="background-color: #fff4e6; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
+        """, unsafe_allow_html=True)
+        muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
+        alerta = st.metric(label="Nº municípios em alerta", value = muni_cota_alerta)
+        st.markdown("</div>", unsafe_allow_html=True)
 
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #fffbe6; padding: 15px; border-radius: 10px;">
-        """, unsafe_allow_html=True)
-        muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
-        ateno = st.metric(label="Nº municípios em atenção", value = muni_cota_ateno)
-        st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+            <div style="background-color: #fffbe6; padding: 15px; border-radius: 10px;">
+        """, unsafe_allow_html=True)
+        muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
+        ateno = st.metric(label="Nº municípios em atenção", value = muni_cota_ateno)
+        st.markdown("</div>", unsafe_allow_html=True)
 
 with col_botao:
-    with st.container():
-        st.markdown("""
-            <div style="background-color: #f0f0f0; padding: 15px; border-radius: 10px;">
-        """, unsafe_allow_html=True)
-        st.subheader(" ")
-        if st.button("🔃Atualizar dados"):
-            st.cache_data.clear()
-        st.markdown("</div>", unsafe_allow_html=True)
+    with st.container():
+        st.markdown("""
+            <div style="background-color: #f0f0f0; padding: 15px; border-radius: 10px;">
+        """, unsafe_allow_html=True)
+        st.subheader(" ")
+        if st.button("🔃Atualizar dados"):
+            st.cache_data.clear()
+        st.markdown("</div>", unsafe_allow_html=True)
