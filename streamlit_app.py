@@ -260,8 +260,8 @@ coordenadas = {
 for estacao, (lat, lon) in coordenadas.items():
     df_completo.loc[df_completo['Nome'] == estacao, 'Latitude'] = lat
     df_completo.loc[df_completo['Nome'] == estacao, 'Longitude'] = lon
-    
-# CSS para os cards
+
+# CSS do card
 st.markdown("""
     <style>
     .card-container {
@@ -270,12 +270,12 @@ st.markdown("""
         border-radius: 10px;
         box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
         margin-bottom: 20px;
+        color: #44546A;
     }
     .card-title {
         font-size: 18px;
         font-weight: bold;
-        color: #44546A;
-        margin-bottom: 10px;
+        margin-bottom: 15px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -285,46 +285,51 @@ col_mapa, col_card, col_botao = st.columns([2, 1, 0.5])
 
 # === COLUNA MAPA ===
 with col_mapa:
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    st.markdown('<div class="card-title">Mapa Interativo das Estações Hidrológicas</div>', unsafe_allow_html=True)
-    
-    # Chama tua função do mapa
-    mapa = criar_mapa_completo(df_completo)
-    st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
+        st.markdown('<div class="card-title">Mapa Interativo das Estações Hidrológicas</div>', unsafe_allow_html=True)
+        
+        mapa = criar_mapa_completo(df_completo)
+        st_folium(mapa, width=1200, height=700, returned_objects=[])
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # === COLUNA CARDS E TABELA ===
 with col_card:
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    
-    # Métrica - Inundação
-    muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
-    st.metric(label="Nº municípios em inundação", value=muni_cota_inund)
-    
-    # Tabela de municípios em inundação
-    locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
-    nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
-    
-    st.markdown('<div class="card-title">Municípios em Cota de Inundação:</div>', unsafe_allow_html=True)
-    st.dataframe(nome_inund, use_container_width=True, hide_index=True)
-    
-    # Métrica - Alerta
-    muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
-    st.metric(label="Nº municípios em alerta", value=muni_cota_alerta)    
-    
-    # Métrica - Atenção
-    muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
-    st.metric(label="Nº municípios em atenção", value=muni_cota_ateno)
-    
-    st.markdown('</div>', unsafe_allow_html=True)
+    with st.container():
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
+        
+        st.markdown('<div class="card-title">Indicadores</div>', unsafe_allow_html=True)
+        
+        # Métrica - Inundação
+        muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
+        st.metric(label="Nº municípios em inundação", value=muni_cota_inund)
+        
+        # Tabela de municípios em inundação
+        locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+        nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
+        
+        st.markdown('<div class="card-title">Municípios em Cota de Inundação:</div>', unsafe_allow_html=True)
+        st.dataframe(nome_inund, use_container_width=True, hide_index=True)
+        
+        # Métrica - Alerta
+        muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
+        st.metric(label="Nº municípios em alerta", value=muni_cota_alerta)    
+        
+        # Métrica - Atenção
+        muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
+        st.metric(label="Nº municípios em atenção", value=muni_cota_ateno)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 # === COLUNA BOTÃO ===
 with col_botao:
-    st.markdown('<div class="card-container">', unsafe_allow_html=True)
-    
-    st.markdown('<div class="card-title">Atualização de Dados</div>', unsafe_allow_html=True)
-    if st.button("🔃 Atualizar dados"):
-        st.cache_data.clear()
-    
-    st.markdown('</div>', unsafe_allow_html=True)   
+    with st.container():
+        st.markdown('<div class="card-container">', unsafe_allow_html=True)
+        
+        st.markdown('<div class="card-title">Atualização de Dados</div>', unsafe_allow_html=True)
+        
+        if st.button("🔃 Atualizar dados"):
+            st.cache_data.clear()
+        
+        st.markdown('</div>', unsafe_allow_html=True)
