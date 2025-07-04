@@ -285,8 +285,8 @@ col_mapa, col_card, col_botao = st.columns([5,1,1])
 
 
 with col_mapa:
-    with st.container():
-        st.markdown("""
+    with st.container():
+        st.markdown("""
             <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
         """, unsafe_allow_html=True)
         st.subheader("🗺️ Mapa Interativo das Estações Hidrológicas")
