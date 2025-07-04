@@ -289,7 +289,7 @@ with col_mapa:
         st.markdown("""
             <div style="background-color: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1);">
         """, unsafe_allow_html=True)
-        st.subheader("🗺️ Mapa Interativo das Estações Hidrológicas")
+        st.subheader("Mapa Interativo das Estações Hidrológicas")
         mapa = criar_mapa_completo(df_completo)
         st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
         st.markdown("</div>", unsafe_allow_html=True)
@@ -300,7 +300,7 @@ with col_card:
             <div style="background-color: #e8f4ff; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
         """, unsafe_allow_html=True)
         muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
-        st.metric(label="🌊 Municípios em Inundação", value=muni_cota_inund)
+        st.metric(label="Municípios em Inundação", value=muni_cota_inund)
         locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
         nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
         st.write("Municípios:")
@@ -312,7 +312,7 @@ with col_card:
             <div style="background-color: #fff4e6; padding: 15px; border-radius: 10px; margin-bottom: 10px;">
         """, unsafe_allow_html=True)
         muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
-        st.metric(label="⚠️ Municípios em Alerta", value=muni_cota_alerta)
+        st.metric(label="Municípios em Alerta", value=muni_cota_alerta)
         st.markdown("</div>", unsafe_allow_html=True)
 
     with st.container():
@@ -320,7 +320,7 @@ with col_card:
             <div style="background-color: #fffbe6; padding: 15px; border-radius: 10px;">
         """, unsafe_allow_html=True)
         muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
-        st.metric(label="🔎 Municípios em Atenção", value=muni_cota_ateno)
+        st.metric(label="Municípios em Atenção", value=muni_cota_ateno)
         st.markdown("</div>", unsafe_allow_html=True)
 
 with col_botao:
