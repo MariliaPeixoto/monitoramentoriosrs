@@ -281,55 +281,29 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # LAYOUT COM 3 COLUNAS
-col_mapa, col_card, col_botao = st.columns([2, 1, 0.5])
+col_mapa, col_card, col_botao = st.columns([5,1,1])
 
-# === COLUNA MAPA ===
 with col_mapa:
-    with st.container():
-        st.markdown('<div class="card-container">', unsafe_allow_html=True)
-        st.markdown('<div class="card-title">Mapa Interativo das Estações Hidrológicas</div>', unsafe_allow_html=True)
-        
-        mapa = criar_mapa_completo(df_completo)
-        st_folium(mapa, width=1200, height=700, returned_objects=[])
-        
-        st.markdown('</div>', unsafe_allow_html=True)
-
-# === COLUNA CARDS E TABELA ===
+    st.subheader("Mapa Interativo das Estações Hidrológicas")
+    mapa = criar_mapa_completo(df_completo)
+    st_data = st_folium(mapa, width=1200, height=700, returned_objects=[])
+    
 with col_card:
-    with st.container():
-        st.markdown('<div class="card-container">', unsafe_allow_html=True)
-        
-        st.markdown('<div class="card-title">Indicadores</div>', unsafe_allow_html=True)
-        
-        # Métrica - Inundação
-        muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
-        st.metric(label="Nº municípios em inundação", value=muni_cota_inund)
-        
-        # Tabela de municípios em inundação
-        locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
-        nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
-        
-        st.markdown('<div class="card-title">Municípios em Cota de Inundação:</div>', unsafe_allow_html=True)
-        st.dataframe(nome_inund, use_container_width=True, hide_index=True)
-        
-        # Métrica - Alerta
-        muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
-        st.metric(label="Nº municípios em alerta", value=muni_cota_alerta)    
-        
-        # Métrica - Atenção
-        muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
-        st.metric(label="Nº municípios em atenção", value=muni_cota_ateno)
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.subheader(" ")
+    # Vendo quantos municipios estao com o icone CotaDeInundao
+    muni_cota_inund = len(df_completo[df_completo['Icone'] == 'CotaDeInundao'])
+    inund = st.metric(label="Nº municípios em inundação", value = muni_cota_inund)
+    locais_inundacao = df_completo[df_completo['Icone'] == 'CotaDeInundao']
+    nome_inund = locais_inundacao[['Nome']].reset_index(drop=True)
+    st.write("Municípios em Cota de Inundação:")
+    st.dataframe(nome_inund, use_container_width=True, hide_index=True)
+    muni_cota_alerta = len(df_completo[df_completo['Icone'] == 'CotaDeAlerta'])
+    alerta = st.metric(label="Nº municípios em alerta", value = muni_cota_alerta)    
+    muni_cota_ateno = len(df_completo[df_completo['Icone'] == 'CotaDeAteno'])
+    ateno = st.metric(label="Nº municípios em atenção", value = muni_cota_ateno)
 
-# === COLUNA BOTÃO ===
 with col_botao:
-    with st.container():
-        st.markdown('<div class="card-container">', unsafe_allow_html=True)
-        
-        st.markdown('<div class="card-title">Atualização de Dados</div>', unsafe_allow_html=True)
-        
-        if st.button("🔃 Atualizar dados"):
-            st.cache_data.clear()
-        
-        st.markdown('</div>', unsafe_allow_html=True)
+    st.subheader(" ")
+    # Botão para atualizar dados
+    if st.button("🔃Atualizar dados"):
+        st.cache_data.clear()
