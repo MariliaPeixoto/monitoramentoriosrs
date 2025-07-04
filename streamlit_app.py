@@ -327,6 +327,4 @@ with col_botao:
     if st.button("🔃 Atualizar dados"):
         st.cache_data.clear()
     
-    st.markdown('</div>', unsafe_allow_html=True)
-✅ O que isso faz?
-    
+    st.markdown('</div>', unsafe_allow_html=True)   
