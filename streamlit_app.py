@@ -150,6 +150,7 @@ def extrair_dados_sgb(link):
         return None
 
 def criar_mapa_completo(df_completo):
+    df_completo = df_completo.dropna()
     mapa = folium.Map(location=[df_completo['Latitude'].mean(), df_completo['Longitude'].mean()], zoom_start=7)
 
     icone_cores = {
